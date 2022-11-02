@@ -1,0 +1,17 @@
+credentials:
+  usernames:
+    gaabbot:
+      email: gerald.abbot@gmail.com
+      name: Gerald Abbot
+      password: $2b$12$TPyOuXubkF5uN8IfHd0BieL.aVLYyaiE2S0kgCBofCHELoWL3f0RW # To be replaced with hashed password
+    mpabbot:
+      email: matthew.p.abbot@gmail.com
+      name: Matthew Abbot
+      password: $2b$12$h2zXLzE3/KA1dxEOlD2iaONVGe/Ojtsk43P0O8juiju9wb/oen3DW # To be replaced with hashed password
+cookie:
+  expiry_days: 30
+  key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMBSY1rF2h/GpCE60/kvECktXfOKPBpQ52VXZDYb03FcIiW8Wg6aSWKB2+NZLNIUOuz9bv0biWQaPCTw+L7dcwUCAwEAAQ==
+  name: GerrysApps
+preauthorized:
+  emails:
+  - gerald.abbot@gmail.com
