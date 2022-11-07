@@ -2,11 +2,13 @@
     "credentials": {
       "usernames": {
         "gaabbot": {
+          "username": "gaabbot",
           "email": "gerald.abbot@gmail.com",
           "name": "Gerald Abbot",
           "password": "$2b$12$TPyOuXubkF5uN8IfHd0BieL.aVLYyaiE2S0kgCBofCHELoWL3f0RW"
         },
         "mpabbot": {
+          "username": "mpabbot",
           "email": "matthew.p.abbot@gmail.com",
           "name": "Matthew Abbot",
           "password": "$2b$12$h2zXLzE3/KA1dxEOlD2iaONVGe/Ojtsk43P0O8juiju9wb/oen3DW"
