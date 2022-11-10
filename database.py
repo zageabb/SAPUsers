@@ -1,9 +1,13 @@
 import sqlalchemy as sa
 
-connection_accdb = (
-    r"DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};"
-    r"DBQ=.\SAPRoles.accdb;"
-    r"ExtendedAnsiSQL=1;"
+#connection_accdb = (
+#    r"DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};"
+#    r"DBQ=.\SAPRoles.accdb;"
+#    r"ExtendedAnsiSQL=1;"
+#)
+
+connection_accdb =(
+    f'sqlite:///SAPRoles.sqlite'
 )
 
 connection_url = sa.engine.URL.create(
