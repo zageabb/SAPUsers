@@ -6,12 +6,12 @@ import sqlalchemy as sa
 #    r"ExtendedAnsiSQL=1;"
 #)
 
-connection_accdb =(
+connection_url =(
     f'sqlite:///SAPRoles.sqlite'
 )
 
-connection_url = sa.engine.URL.create(
-    "access+pyodbc",
-    query={"odbc_connect": connection_accdb}
-)
+#connection_url = sa.engine.URL.create(
+#    "access+pyodbc",
+#    query={"odbc_connect": connection_accdb}
+#)
 engine = sa.create_engine(connection_url)
