@@ -1,11 +1,13 @@
 #import pickle
 #from pathlib import Path
 import streamlit as st
+st.set_page_config(layout="wide",
+    page_title="Gerry's SAP Roles App"
+    )
 import streamlit_authenticator as stauth
 #import yaml
 import json
 #import sqlalchemy as sa
-
 #import sys 
 #import os
 #sys.path.append(os.path.abspath("./pages/database.py"))
@@ -15,10 +17,10 @@ from database import *
 #from .authenticate import Authenticate
 
 
-st.set_page_config(
-    page_title="Gerry's SAP Roles App",
+#st.set_page_config(
+#    page_title="Gerry's SAP Roles App",
     
-)
+#)
 
 #connection_accdb = (
 #    r"DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};"

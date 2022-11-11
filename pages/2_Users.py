@@ -1,4 +1,5 @@
 import streamlit as st
+#st.set_page_config(layout="wide")
 #import streamlit_authenticator as stauth
 
 import sys
@@ -61,7 +62,7 @@ if st.session_state["authentication_status"] == True:
 
         Roles = pd.DataFrame(S4Roles,columns=['User Name','Role', 'Stream'])
         S4Roles_Selected = vw.grid_view(Roles)
-
+        S4Roles.close()
         if len(S4Roles_Selected) !=0:
             remove_role = st.button("Remove Role from User")
 
@@ -76,6 +77,7 @@ if st.session_state["authentication_status"] == True:
                     
                 Roles_removal = engine.execute(Sql_code5)
                 st.success('Role removed from user')
+                Roles_removal.close()
 
         Sql_code2 = f"SELECT S4_Roles.E2E_stream \
                         FROM S4_Roles \
@@ -85,7 +87,7 @@ if st.session_state["authentication_status"] == True:
         S4Roles_List = engine.execute(Sql_code2)
 
         S4_Roles = pd.DataFrame(S4Roles_List, columns=['S4 Roles'])
-
+        S4Roles_List.close()
         platform_name = st.selectbox ('Stream',options= S4_Roles)
 
         st.write(platform_name)
@@ -99,7 +101,7 @@ if st.session_state["authentication_status"] == True:
             Roles_List = engine.execute(Sql_code3) 
             Roles_filtered = pd.DataFrame(Roles_List, columns=['E2E Stream','Business Role Name','Description'])  
             S4filtered_Selected = vw.grid_view(Roles_filtered)
-
+            Roles_List.close()
         if len(S4filtered_Selected) != 0:
             copy_role = st.button("Copy Role to User")
 
@@ -114,6 +116,7 @@ if st.session_state["authentication_status"] == True:
                     
                 Roles_List = engine.execute(Sql_code4)
                 st.success('Role added to user')
+                Roles_List.close()
 
         st.write('Legacy Roles')
         #Sql_code = f"SELECT User_Name, Role, Start_date, End_date, Active FROM Legacy_User_Role WHERE (User_Name = '{User_Name}');"
@@ -127,7 +130,7 @@ if st.session_state["authentication_status"] == True:
 
         Roles = pd.DataFrame(LegacyRoles,columns=['User Name','Role', 'Stream','Start Date', 'End Date','Active'])
         LRoles_Selected = vw.grid_view(Roles)
-
+        LegacyRoles.close()
         complete = st.button('Mark User Complete')
 
         if complete:
@@ -137,5 +140,5 @@ if st.session_state["authentication_status"] == True:
 
             UserComplete = engine.execute(Sql_code6)
             st.success('User Updated')  
-                
+            UserComplete.close()    
     #st.dataframe(df)

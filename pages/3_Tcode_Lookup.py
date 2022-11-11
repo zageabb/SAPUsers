@@ -1,4 +1,5 @@
 import streamlit as st
+#st.set_page_config(layout="wide")
 #import streamlit_authenticator as stauth
 
 import sys
@@ -52,7 +53,7 @@ if st.session_state["authentication_status"] == True:
 
             Roles = pd.DataFrame(TCode_List,columns=['E2E Stream','Business Role Name', 'Tcode/App','Description','Application'])
             LRoles_Selected = vw.grid_view(Roles)
-
+            TCode_List.close()
 
             st.write("Legacy Roles:")
             Sql_code1 = f"SELECT Role, Tcode, Tcode_Description \
@@ -65,6 +66,7 @@ if st.session_state["authentication_status"] == True:
 
             LRoles = pd.DataFrame(Legacy_TCode_List,columns=['Role', 'Tcode','Description'])
             LegacyRoles_Selected = vw.grid_view(LRoles)
+            Legacy_TCode_List.close()
 
         if platform_name =='Role':
             st.write("S4 Roles:")
@@ -81,7 +83,7 @@ if st.session_state["authentication_status"] == True:
 
             Roles = pd.DataFrame(TCode_List,columns=['E2E Stream','Business Role Name', 'Tcode/App','Description','Application'])
             LRoles_Selected = vw.grid_view(Roles)
-
+            TCode_List.close()
 
             st.write("Legacy Roles:")
             Sql_code1 = f"SELECT Role, Tcode, Tcode_Description \
@@ -94,4 +96,5 @@ if st.session_state["authentication_status"] == True:
 
             LRoles = pd.DataFrame(Legacy_TCode_List,columns=['Role', 'Tcode','Description'])
             LegacyRoles_Selected = vw.grid_view(LRoles)
+            Legacy_TCode_List.close()
 

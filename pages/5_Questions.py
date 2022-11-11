@@ -1,4 +1,5 @@
 import streamlit as st
+#st.set_page_config(layout="wide")
 #import streamlit_authenticator as stauth
 
 import sys
@@ -35,6 +36,7 @@ if st.session_state["authentication_status"] == True:
 
         Question_Submit = engine.execute(Sql_question)
         st.text_input = ""
+        Question_Submit.close()
 
     st.write("Questions:")
 
@@ -50,3 +52,4 @@ if st.session_state["authentication_status"] == True:
 
     Questions = pd.DataFrame(Question_List,columns=['Question', 'Answered'])
     Questions_Selected = vw.grid_view(Questions)
+    Question_List.close()
