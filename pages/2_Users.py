@@ -123,7 +123,7 @@ if st.session_state["authentication_status"] == True:
 
         Sql_code = f"SELECT Legacy_User_Role.User_Name, Legacy_User_Role.Role, Legacy_Roles.Stream, Legacy_User_Role.Start_date, Legacy_User_Role.End_date, Legacy_User_Role.Active \
             FROM Legacy_User_Role INNER JOIN Legacy_Roles ON Legacy_User_Role.Role = Legacy_Roles.Role \
-            WHERE (((Legacy_User_Role.User_Name)='{User_Name}') AND ((Legacy_Roles.Block)=False));"
+            WHERE (((Legacy_User_Role.User_Name)='{User_Name}') AND ((Legacy_Roles.Block)=0));"
 
         LegacyRoles = engine.execute(Sql_code)
         
