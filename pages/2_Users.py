@@ -16,6 +16,15 @@ import sqlalchemy as sa
 
 #engine = create_engine("access+pyodbc://@SAPRoles")
 
+if "user_complete" not in st.session_state:
+    st.session_state["user_complete"] = ['True','False']
+
+user_complete = st.session_state["user_complete"]
+
+if "user_exclude" not in st.session_state:
+    st.session_state["user_exclude"] = ['True','False']
+
+user_exclude = st.session_state["user_exclude"]
 
 if st.session_state["authentication_status"] == False:
     st.write("User not authenticated")
@@ -25,15 +34,36 @@ if st.session_state["authentication_status"] == "":
 
 
 if st.session_state["authentication_status"] == True:
+    
+    comp = user_complete
+
+    complist = ""
+
+    for x in range(len(comp)):
+        if complist == "":
+            complist = f"(Complete='{comp[x]}')"
+        else:
+            complist = complist + f" OR (Complete='{comp[x]}')"
+
+    excl = user_exclude
+
+    excllist = ""
+
+    for x in range(len(excl)):
+        if excllist == "":
+            excllist = f"(Exclude='{excl[x]}')"
+        else:
+            excllist = excllist + f" OR (Exclude='{excl[x]}')"
 
 
     #st.write("You have entered:", st.session_state["my_input"])
 
-    result = engine.execute(
-        
-            "SELECT Full_Name,User_Name, User_Master, Complete, Exclude \
-            FROM Legacy_Users;"
-    )
+    user_list =f"SELECT Full_Name,User_Name, User_Master, Complete, Exclude \
+            FROM Legacy_Users \
+            WHERE (({complist}) AND ({excllist}));"
+
+
+    result = engine.execute(user_list)
 
     test = pd.DataFrame(result,columns=['Full Name','User Name','User Master','Complete', 'Exclude'])
     #test.drop(['password'], axis=1, inplace=True)
@@ -41,6 +71,27 @@ if st.session_state["authentication_status"] == True:
         st.write("User Selection")
         selected = vw.grid_view(test)
         st.write(len(selected))
+
+        st.write()
+        user_complete = st.multiselect(
+            "Complete ?",
+            options=['True','False'],
+            help = 'Legacy user field complete',
+            default = st.session_state["user_complete"]
+        )
+        user_exclude = st.multiselect(
+            "Exclude ?",
+            options=['True','False'],
+            help = 'Legacy user field exclude',
+            default = st.session_state["user_exclude"]
+        )
+
+        if user_complete:
+            st.session_state["user_complete"] = user_complete
+
+        if user_exclude:
+            st.session_state["user_exclude"] = user_exclude
+
 
 
     
@@ -123,7 +174,7 @@ if st.session_state["authentication_status"] == True:
 
         Sql_code = f"SELECT Legacy_User_Role.User_Name, Legacy_User_Role.Role, Legacy_Roles.Stream, Legacy_User_Role.Start_date, Legacy_User_Role.End_date, Legacy_User_Role.Active \
             FROM Legacy_User_Role INNER JOIN Legacy_Roles ON Legacy_User_Role.Role = Legacy_Roles.Role \
-            WHERE (((Legacy_User_Role.User_Name)='{User_Name}') AND ((Legacy_Roles.Block)=0));"
+            WHERE (((Legacy_User_Role.User_Name)='{User_Name}') AND ((Legacy_Roles.Block)='False'));"
 
         LegacyRoles = engine.execute(Sql_code)
         
@@ -135,10 +186,21 @@ if st.session_state["authentication_status"] == True:
 
         if complete:
             Sql_code6 = f"UPDATE Legacy_Users \
-                SET Complete = -1 \
+                SET Complete = 'True' \
                 WHERE (User_Name='{User_Name}');"
 
             UserComplete = engine.execute(Sql_code6)
             st.success('User Updated')  
             UserComplete.close()    
     #st.dataframe(df)
+
+        uncomplete = st.button('Mark User Open')
+
+        if uncomplete:
+            Sql_code7 = f"UPDATE Legacy_Users \
+                SET Complete = 'False' \
+                WHERE (User_Name='{User_Name}');"
+
+            UserUnComplete = engine.execute(Sql_code7)
+            st.success('User Updated')  
+            UserUnComplete.close()  

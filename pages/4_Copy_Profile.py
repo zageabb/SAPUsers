@@ -51,7 +51,7 @@ if st.session_state["authentication_status"] == True:
 
         Sql_code = f"SELECT DISTINCT Legacy_User_Role.Role, Legacy_Roles.Stream, Legacy_User_Role.Active \
             FROM Legacy_User_Role INNER JOIN Legacy_Roles ON Legacy_User_Role.Role = Legacy_Roles.Role \
-            WHERE ((Legacy_Roles.Block)=False);"
+            WHERE ((Legacy_Roles.Block)='False');"
 
         LegacyRoles = engine.execute(Sql_code)
         
@@ -73,7 +73,7 @@ if st.session_state["authentication_status"] == True:
         
                 f"SELECT Legacy_Users.User_Name, Legacy_Users.Full_Name, Legacy_Users.User_Master, Legacy_Users.Complete, Legacy_Users.Exclude \
                 FROM Legacy_Users INNER JOIN Legacy_User_Role ON Legacy_Users.User_Name = Legacy_User_Role.User_Name \
-                WHERE (((Legacy_User_Role.Role)='{LRole}') AND (Legacy_Users.Complete=0));"
+                WHERE (((Legacy_User_Role.Role)='{LRole}') AND (Legacy_Users.Complete='False'));"
             )
 
             test2 = pd.DataFrame(result2,columns=['User Name','Full Name','User Master','Complete', 'Exclude'])
@@ -112,7 +112,7 @@ if st.session_state["authentication_status"] == True:
 
                     add_roles = engine.execute(
 
-                    f"UPDATE Legacy_Users SET Legacy_Users.Complete = -1 \
+                    f"UPDATE Legacy_Users SET Legacy_Users.Complete = 'True' \
                         WHERE (((Legacy_Users.User_Name)='{selected2[x]['User Name']}'));"
 
                     )
