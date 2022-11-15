@@ -1,12 +1,13 @@
 import streamlit as st
 #st.set_page_config(layout="wide")
-#import streamlit_authenticator as stauth
+import streamlit_authenticator as stauth
 #from st_aggrid import GridOptionsBuilder, AgGrid, GridUpdateMode, DataReturnMode
 import pandas as pd
 
 import sys
 # adding Folder_2 to the system path
 sys.path.insert(0, '../')
+from database import *
 
 import viewer as vw
 
@@ -19,11 +20,24 @@ if st.session_state["authentication_status"] == "":
 if st.session_state["authentication_status"] == True:
     st.title("User Information")
 
+    config = st.session_state["config"]
+    name = st.session_state["username"]
+
+    Sql_code1 = f"SELECT username, name, email, pwd \
+        FROM users;" # \
+        #WHERE (User_Name='{username}');"
+
+    users = engine.execute(Sql_code1)
+        
+
+    Users = pd.DataFrame(users,columns=['User Name','Name', 'Email', 'PWD'])
+    Users_Selected = vw.grid_view(Users)
+    users.close()
 
     config = st.session_state["config"]
 
-    test = pd.DataFrame.from_dict(config['credentials']['usernames'],orient='index',columns=['username','email','name','password'])
-    test.drop(['password'], axis=1, inplace=True)
+    #test = pd.DataFrame.from_dict(config['credentials']['usernames'],orient='index',columns=['username','email','name','password'])
+    #test.drop(['password'], axis=1, inplace=True)
 
     #grid_response = AgGrid(test,reload_data=True)
 
@@ -51,13 +65,47 @@ if st.session_state["authentication_status"] == True:
     #selected = grid_response['selected_rows']
     #df = pd.DataFrame(selected)
 
-    selected = vw.grid_view(test)
+   # selected = vw.grid_view(test)
+
+    st.write(len(Users_Selected))
+
+    if len(Users_Selected) != 0:
+        st.write("User selected: ", Users_Selected[0]['Name'])
+        left, centre, right = st.columns(3)
+        with left:
+            add_user = st.button('Add User')
+
+        with centre:
+            update_user = st.button('Update User')
+
+        with right:
+            delete_user = st.button('Delete User')
+
+        reset = st.button('Reset Password')
+
+        if add_user:
+            with st.form("User Add"):
+                UserName = st.text_input("UserName")
+                Name = st.text_input("Name")
+                Email = st.text_input("Email")
+                Pwd = st.text_input("Password")
+
+                submit = st.form_submit_button("Submit")
+
+                if submit:
+                    pwd = stauth.Hasher(Pwd).generate()
+
+                    sql_code2 = f"INSERT INTO users(username, name, email, pwd)  \
+                        VALUES ('{UserName}','{Name}','{Email}','{pwd}',1);"
+                    st.write(sql_code2)
+                    UserAdded = engine.execute(sql_code2)
+                    st.success('User Added')  
+                    UserAdded.close()
 
 
-    st.write(len(selected))
 
 
-    if len(selected) != 0:
-        #st.write(selected[0]['name'])
-        st.button("Testing")
+
+
+
     #st.dataframe(df)

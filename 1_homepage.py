@@ -54,6 +54,9 @@ name, authentication_status, username = authenticator.login('Login', 'main')
 if authentication_status: # True login
     authenticator.logout('Logout', 'sidebar')
 
+    #st.session_state["name"] = name
+    #st.session_state["authentication_status"]=authentication_status
+
 
     st.title("Main Page")
     
@@ -61,6 +64,12 @@ if authentication_status: # True login
     #st.title('Some content')
     st.write("You're now logged into the SAP Roles App. Select pages on the left sidebar to use those facitilites")
 
+
+    #st.write(config['credentials'])
+    #st.write(config['cookie']['name'])
+    #st.write(config['cookie']['key'])
+    #st.write(config['cookie']['expiry_days'])
+    #st.write(config['preauthorized'])
 
    # st.sidebar.success("Select a page above")
 
