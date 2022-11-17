@@ -1,5 +1,6 @@
 #import pickle
 #from pathlib import Path
+from nbformat import from_dict
 import streamlit as st
 st.set_page_config(layout="wide",
     page_title="Gerry's SAP Roles App"
@@ -7,11 +8,14 @@ st.set_page_config(layout="wide",
 import streamlit_authenticator as stauth
 #import yaml
 import json
+import pandas as pd
 #import sqlalchemy as sa
 #import sys 
 #import os
 #sys.path.append(os.path.abspath("./pages/database.py"))
 from database import *
+import viewer as vw
+import User_Dict as ud
 
 
 #from .authenticate import Authenticate
@@ -40,14 +44,30 @@ from database import *
 with open("./config.json") as file:
     config = json.load(file)
 
+sql_code1 = f"SELECT username, email, name, pwd \
+    FROM users;" # \
+    #WHERE (username ='{edituser}');"
 
-authenticator = stauth.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days'],
-    config['preauthorized']
-)
+users = engine.execute(sql_code1)
+Users = pd.DataFrame(users,columns=['username','email','name', 'pwd']) #, index=None
+#vw.grid_view(Users)
+users.close() 
+creda = ud.userdict(Users)
+
+#creds = Users['username'].to_dict()
+    
+    
+#st.write(creda)
+#st.write(config['credentials'])
+
+authenticator = stauth.Authenticate(creda, config['cookie']['name'], config['cookie']['key'], cookie_expiry_days=config['cookie']['expiry_days'])
+#authenticator = stauth.Authenticate(
+#    config['credentials'],
+#    config['cookie']['name'],
+#    config['cookie']['key'],
+#    config['cookie']['expiry_days'],
+#    config['preauthorized']
+#)
 
 name, authentication_status, username = authenticator.login('Login', 'main')
 
@@ -64,6 +84,7 @@ if authentication_status: # True login
     #st.title('Some content')
     st.write("You're now logged into the SAP Roles App. Select pages on the left sidebar to use those facitilites")
 
+    st.write(st.session_state)
 
     #st.write(config['credentials'])
     #st.write(config['cookie']['name'])
@@ -88,7 +109,7 @@ if authentication_status: # True login
     #    st.write("You have entered:", my_input)
 
     if "config" not in st.session_state:
-        st.session_state["config"] = config
+        st.session_state["config"] = "database" #creda #config
 
 
 
