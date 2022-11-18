@@ -27,7 +27,7 @@ def app():
     if unlock: st.session_state.edit = True
 
     df = fetch_data()
-    ag = AgGrid(df, editable=st.session_state.edit, height=200)
+    ag = AgGrid(df, editable=st.session_state.edit, height=200, enable_enterprise_modules=False)
     df2=ag['data']
     st.session_state.store=df2.to_dict()
     st.dataframe(df2)
