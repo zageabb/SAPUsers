@@ -19,20 +19,20 @@ if st.session_state["authentication_status"] == False:
 if st.session_state["authentication_status"] == "":
     st.write("User not authenticated")
 
-if st.session_state["authentication_status"] == True:
+if st.session_state["authentication_status"] == True and st.session_state['username']=='gaabbot':
     st.title("User Information")
 
     config = st.session_state["config"]
     name = st.session_state["username"]
 
-    Sql_code1 = f"SELECT username, name, email, pwd \
+    Sql_code1 = f"SELECT username, name, email, pwd, force \
         FROM users;" # \
         #WHERE (User_Name='{username}');"
 
     users = engine.execute(Sql_code1)
         
 
-    Users = pd.DataFrame(users,columns=['User Name','Name', 'Email', 'PWD'])
+    Users = pd.DataFrame(users,columns=['User Name','Name', 'Email', 'PWD','Force'])
     Users_Selected = vw.grid_view(Users)
     users.close()
 
@@ -91,7 +91,7 @@ if st.session_state["authentication_status"] == True:
             st.write("New password generated: ",rnd)
             pwd = stauth.Hasher(rnd).generate()
             Sql_code6 = f"UPDATE users \
-                SET pwd = '{pwd[0]}' \
+                SET pwd = '{pwd[0]}', force=-1 \
                 WHERE (username='{Users_Selected[0]['User Name']}');"
             
             UserAdded = engine.execute(Sql_code6)

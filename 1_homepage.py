@@ -8,6 +8,7 @@ st.set_page_config(layout="wide",
 import streamlit_authenticator as stauth
 #import yaml
 import json
+import numpy as np
 import pandas as pd
 #import sqlalchemy as sa
 #import sys 
@@ -44,12 +45,12 @@ import User_Dict as ud
 with open("./config.json") as file:
     config = json.load(file)
 
-sql_code1 = f"SELECT username, email, name, pwd \
+sql_code1 = f"SELECT username, email, name, pwd, force \
     FROM users;" # \
     #WHERE (username ='{edituser}');"
 
 users = engine.execute(sql_code1)
-Users = pd.DataFrame(users,columns=['username','email','name', 'pwd']) #, index=None
+Users = pd.DataFrame(users,columns=['username','email','name', 'pwd', 'force']) #, index=None
 #vw.grid_view(Users)
 users.close() 
 creda = ud.userdict(Users)
@@ -74,6 +75,11 @@ name, authentication_status, username = authenticator.login('Login', 'main')
 if authentication_status: # True login
     authenticator.logout('Logout', 'sidebar')
 
+    CurrentUser=Users.loc[Users['username'] == f'{username}']
+
+    mask = Users['username'] == f'{username}'
+    pos = int(np.flatnonzero(mask))
+
     #st.session_state["name"] = name
     #st.session_state["authentication_status"]=authentication_status
 
@@ -84,7 +90,34 @@ if authentication_status: # True login
     #st.title('Some content')
     st.write("You're now logged into the SAP Roles App. Select pages on the left sidebar to use those facitilites")
 
-    st.write(st.session_state)
+    st.write(pos)
+
+    if CurrentUser['force'][pos]==-1:
+        NewPassword = st.text_input("Enter new password")
+        Update = st.button('Update Password')
+
+        if Update:
+            st.write(NewPassword)
+            Pwd = stauth.Hasher([NewPassword]).generate()
+            st.write(Pwd)
+            Sql_code6 = f"UPDATE users \
+                SET pwd = '{Pwd[0]}', force=0 \
+                WHERE (username='{username}');" #.format(pwd = chr(34) + str(Pwd) + chr(34), user = username)
+            
+            passUpdated = engine.execute(Sql_code6)
+            st.success('User password set')  
+            passUpdated.close()
+
+            #rnd = [str(random.randint(1000,9999))]
+            #st.write("New password generated: ",rnd)
+            #pwd = stauth.Hasher(rnd).generate()
+            #Sql_code6 = f"UPDATE users \
+            #    SET pwd = '{pwd[0]}', force=-1 \
+            #    WHERE (username='{Users_Selected[0]['User Name']}');"
+            
+            #UserAdded = engine.execute(Sql_code6)
+            #st.success('User Reset')  
+            #UserAdded.close()            
 
     #st.write(config['credentials'])
     #st.write(config['cookie']['name'])
