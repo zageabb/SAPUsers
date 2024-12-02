@@ -21,23 +21,23 @@ import viewer as vw
 
 #if st.session_state["authentication_status"] == True and st.session_state['username']=='gaabbot':
 #if st.session_state["authentication_status"] == False:
-    st.title("User Information")
+st.title("User Information")
 
-    config = st.session_state["config"]
-    name = st.session_state["username"]
+config = st.session_state["config"]
+name = st.session_state["username"]
 
-    Sql_code1 = f"SELECT username, name, email, pwd, force \
-        FROM users;" # \
+Sql_code1 = f"SELECT username, name, email, pwd, force \
+    FROM users;" # \
         #WHERE (User_Name='{username}');"
 
-    users = engine.execute(Sql_code1)
+users = engine.execute(Sql_code1)
         
 
-    Users = pd.DataFrame(users,columns=['User Name','Name', 'Email', 'PWD','Force'])
-    Users_Selected = vw.grid_view(Users)
-    users.close()
+Users = pd.DataFrame(users,columns=['User Name','Name', 'Email', 'PWD','Force'])
+Users_Selected = vw.grid_view(Users)
+users.close()
 
-    config = st.session_state["config"]
+config = st.session_state["config"]
 
     #test = pd.DataFrame.from_dict(config['credentials']['usernames'],orient='index',columns=['username','email','name','password'])
     #test.drop(['password'], axis=1, inplace=True)
@@ -70,11 +70,11 @@ import viewer as vw
 
    # selected = vw.grid_view(test)
 
-    st.write(len(Users_Selected))
-    st.session_state["edituser"] = ""
-    if len(Users_Selected) != 0:
-        st.write("User selected: ", Users_Selected[0]['Name'])
-        st.session_state["edituser"] = Users_Selected[0]['User Name']
+st.write(len(Users_Selected))
+st.session_state["edituser"] = ""
+if len(Users_Selected) != 0:
+    st.write("User selected: ", Users_Selected[0]['Name'])
+    st.session_state["edituser"] = Users_Selected[0]['User Name']
         #left, centre, right = st.columns(3)
         #with left:
         #    add_user = st.button('Add User')
@@ -85,19 +85,19 @@ import viewer as vw
         #with right:
         #    delete_user = st.button('Delete User')
 
-        reset = st.button('Reset Password')
+    reset = st.button('Reset Password')
 
-        if reset:
-            rnd = [str(random.randint(1000,9999))]
-            st.write("New password generated: ",rnd)
-            pwd = stauth.Hasher(rnd).generate()
-            Sql_code6 = f"UPDATE users \
-                SET pwd = '{pwd[0]}', force=-1 \
-                WHERE (username='{Users_Selected[0]['User Name']}');"
+    if reset:
+        rnd = [str(random.randint(1000,9999))]
+        st.write("New password generated: ",rnd)
+        pwd = stauth.Hasher(rnd).generate()
+        Sql_code6 = f"UPDATE users \
+            SET pwd = '{pwd[0]}', force=-1 \
+            WHERE (username='{Users_Selected[0]['User Name']}');"
             
-            UserAdded = engine.execute(Sql_code6)
-            st.success('User Reset')  
-            UserAdded.close()
+        UserAdded = engine.execute(Sql_code6)
+        st.success('User Reset')  
+        UserAdded.close()
 
         #if "sql2" in st.session_state: 
         #    sql_code2 = st.session_state["sql2"]
