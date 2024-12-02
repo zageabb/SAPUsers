@@ -1,7 +1,7 @@
 import streamlit as st
 #st.set_page_config(layout="wide")
 import streamlit_authenticator as stauth
-#from st_aggrid import GridOptionsBuilder, AgGrid, GridUpdateMode, DataReturnMode
+from st_aggrid import GridOptionsBuilder, AgGrid, GridUpdateMode, DataReturnMode
 import pandas as pd
 import random
 
