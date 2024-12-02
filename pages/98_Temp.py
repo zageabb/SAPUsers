@@ -74,7 +74,7 @@ st.write(len(Users_Selected))
 #st.session_state["edituser"] = ""
 if len(Users_Selected) != 0:
     st.write("User selected: ", Users_Selected[0]['Name'])
-    st.session_state["edituser"] = Users_Selected[0]['User Name']
+    #st.session_state["edituser"] = Users_Selected[0]['User Name']
         #left, centre, right = st.columns(3)
         #with left:
         #    add_user = st.button('Add User')
