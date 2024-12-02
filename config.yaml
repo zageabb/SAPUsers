@@ -3,7 +3,7 @@ credentials:
     gaabbot:
       email: gerald.abbot@gmail.com
       name: Gerald Abbot
-      password: $2b$12$TPyOuXubkF5uN8IfHd0BieL.aVLYyaiE2S0kgCBofCHELoWL3f0RW # To be replaced with hashed password
+      password: $2b$12$7wVTLpq/QCVphHshAEMcxe69OsXz6x0VHXMIFKSveMct6sy3oEMdC # To be replaced with hashed password
     mpabbot:
       email: matthew.p.abbot@gmail.com
       name: Matthew Abbot
