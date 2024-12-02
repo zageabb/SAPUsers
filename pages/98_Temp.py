@@ -23,8 +23,8 @@ import viewer as vw
 #if st.session_state["authentication_status"] == False:
 st.title("User Information")
 
-config = st.session_state["config"]
-name = st.session_state["username"]
+#config = st.session_state["config"]
+#name = st.session_state["username"]
 
 Sql_code1 = f"SELECT username, name, email, pwd, force \
     FROM users;" # \
@@ -37,7 +37,7 @@ Users = pd.DataFrame(users,columns=['User Name','Name', 'Email', 'PWD','Force'])
 Users_Selected = vw.grid_view(Users)
 users.close()
 
-config = st.session_state["config"]
+#config = st.session_state["config"]
 
     #test = pd.DataFrame.from_dict(config['credentials']['usernames'],orient='index',columns=['username','email','name','password'])
     #test.drop(['password'], axis=1, inplace=True)
@@ -71,7 +71,7 @@ config = st.session_state["config"]
    # selected = vw.grid_view(test)
 
 st.write(len(Users_Selected))
-st.session_state["edituser"] = ""
+#st.session_state["edituser"] = ""
 if len(Users_Selected) != 0:
     st.write("User selected: ", Users_Selected[0]['Name'])
     st.session_state["edituser"] = Users_Selected[0]['User Name']
