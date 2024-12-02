@@ -20,7 +20,7 @@ import viewer as vw
 #    st.write("User not authenticated")
 
 #if st.session_state["authentication_status"] == True and st.session_state['username']=='gaabbot':
-if st.session_state["authentication_status"] == False:
+#if st.session_state["authentication_status"] == False:
     st.title("User Information")
 
     config = st.session_state["config"]
